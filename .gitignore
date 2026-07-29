@@ -1,0 +1,5 @@
+venv/
+.venv
+output/figures/*
+output/tikz/*
+output/tables/*

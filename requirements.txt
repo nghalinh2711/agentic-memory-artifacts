@@ -1,0 +1,13 @@
+matplotlib==3.11.1
+numpy==2.5.1
+pandas==3.0.5
+
+# Notebook stack
+jupyter==1.1.1
+ipykernel==7.3.0
+notebook==7.6.1
+
+# The original tikzplotlib package on PyPI (0.10.1) is incompatible with
+# matplotlib>=3.8 (it imports a function that was removed from
+# matplotlib.backends.backend_pgf). Install the maintained fork instead.
+git+https://github.com/henrypfister/tikzplotlib.git
