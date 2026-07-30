@@ -21,23 +21,14 @@ This repository contains the replication package and evaluation artifacts for th
 │   └── delivery/        # Prompts for the delivery pipeline (coding & requirements agents)
 ├── results/             # Evaluation data and user-study results
 │   ├── docs/            # User-study form and summarized qualitative results
-│   └── form-results/    # CSV exports from user-study forms
+│   ├── form-results/    # CSV exports from user-study forms
+│   └── programming/     # Programming assignment runtimes and scores
 └── scripts/             # Utilities for interacting with the Artemis LMS benchmark
 ```
 
 ---
 
 ## Folder Details
-
-### `logs/`
-Raw execution logs captured during agent runs for all experimental conditions:
-- **`mvps/`** — Agent output logs for the two MVP applications (App A and App B) generated during the study.
-- **`programming/`** — Execution logs from programming-exercise runs across multiple semesters and final exams (e.g., `st22final01.log` through `wt2526final02.log`, ~164k total lines). Each log captures the full agent interaction trace for that exercise.
-
-### `scripts/`
-Python utilities extending a mini-CLI for interacting with the [Artemis](https://artemis-benchmark.vdl-ws.sdq.kastel.kit.edu/) benchmark instance:
-- `clone_student_repos.py` — Clone student programming-exercise repositories using term/final-exam identifiers.
-- `.env.example` — Template environment file for Artemis connection settings.
 
 ### `guidelines/`
 Context-specific guidelines used during the generation of MVPs:
@@ -67,6 +58,8 @@ Data from and for the evaluation:
 - `form-results/appA.csv` — User-study responses for Application A.
 - `form-results/appB.csv` — User-study responses for Application B.
 - `form-results/background.csv` — Participant background/demographic data.
+- `programming/runtimes.csv` — Wall-clock duration and lines changed (added/removed) for each programming assignment under `no_memory` and `memory` conditions.
+- `programming/scores.csv` — Iterative test scores for each programming assignment under `no_memory` and `memory` conditions, tracking score progression across successive fix/improvement iterations.
 
 ---
 
@@ -84,3 +77,18 @@ pip install -r requirements.txt
 ```
 
 Then open the notebooks in the `notebooks/` directory with Jupyter or VS Code and run them to regenerate the plots (output to `output/`).
+
+---
+
+## Citation
+
+```bibtex
+@misc{HaLinhNguyen_2026_agentic_memory,
+  author       = {Ha Linh Nguyen},
+  title        = {Replication Artifacts for Adaptive Context and Memory Management},
+  year         = {2026},
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.21702443},
+  url          = {https://doi.org/10.5281/zenodo.21702443}
+}
+```
