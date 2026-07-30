@@ -1,0 +1,1 @@
+A mini-CLI extension to clone student repositories from the Artemis Benchmark.

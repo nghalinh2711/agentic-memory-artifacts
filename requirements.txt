@@ -7,6 +7,11 @@ jupyter==1.1.1
 ipykernel==7.3.0
 notebook==7.6.1
 
+requests>=2.31
+python-dotenv>=1.0
+questionary>=2.0
+
+
 # The original tikzplotlib package on PyPI (0.10.1) is incompatible with
 # matplotlib>=3.8 (it imports a function that was removed from
 # matplotlib.backends.backend_pgf). Install the maintained fork instead.

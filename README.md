@@ -11,19 +11,35 @@ This repository contains the replication package and evaluation artifacts for th
 ```
 .
 ├── guidelines/          # Context-specific guidelines used during MVP generation
+├── logs/                # Raw agent execution logs for all experimental runs
+│   ├── mvps/            # MVP (application) generation logs
+│   └── programming/     # Programming-exercise execution logs
 ├── notebooks/           # Jupyter notebooks for generating thesis plots & figures
 ├── output/              # Output directory for generated plots
 ├── prompts/             # Custom prompt structures and system instructions
 │   ├── agentic-memory/  # Prompts for the memory system (fact extraction, review, etc.)
 │   └── delivery/        # Prompts for the delivery pipeline (coding & requirements agents)
-└── results/             # Evaluation data and user-study results
-    ├── docs/            # User-study form and summarized qualitative results
-    └── form-results/    # CSV exports from user-study forms
+├── results/             # Evaluation data and user-study results
+│   ├── docs/            # User-study form and summarized qualitative results
+│   └── form-results/    # CSV exports from user-study forms
+└── scripts/             # Utilities for interacting with the Artemis LMS benchmark
 ```
 
 ---
 
 ## Folder Details
+
+### `logs/`
+Raw execution logs captured during agent runs for all experimental conditions:
+- **`mvps/`** — Agent output logs for the two MVP applications (App A and App B) generated during the study.
+- **`programming/`** — Execution logs from programming-exercise runs across multiple semesters and final exams (e.g., `st22final01.log` through `wt2526final02.log`, ~164k total lines). Each log captures the full agent interaction trace for that exercise.
+
+### `scripts/`
+Python utilities extending a mini-CLI for interacting with the [Artemis](https://github.com/ls1intum/Artemis) benchmark instance:
+- `clone_student_repos.py` — Clone student programming-exercise repositories using term/final-exam identifiers.
+- `fetch_results.py` — Fetch and render the latest test results (with feedback) into Markdown reports.
+- `config.py` — Shared configuration, `.env` loading, and credential helpers.
+- `.env.example` — Template environment file for Artemis connection settings.
 
 ### `guidelines/`
 Context-specific guidelines used during the generation of MVPs:
@@ -61,7 +77,7 @@ Data from and for the evaluation:
 To run the analysis and plot-generation notebooks:
 
 ```bash
-git clone https://github.com/yourusername/agentic-memory-artifacts.git
+git clone https://github.com/nghalinh2711/agentic-memory-artifacts.git
 cd agentic-memory-artifacts
 
 python -m venv venv
@@ -76,8 +92,8 @@ Then open the notebooks in the `notebooks/` directory with Jupyter or VS Code an
 ## Citation
 
 ```bibtex
-@misc{yourname_2026_agentic_memory,
-  author       = {Your Full Name},
+@misc{HaLinhNguyen_2026_agentic_memory,
+  author       = {Ha Linh Nguyen},
   title        = {Replication Artifacts for Adaptive Context and Memory Management},
   year         = {2026},
   publisher    = {Zenodo},
