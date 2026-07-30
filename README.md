@@ -35,10 +35,8 @@ Raw execution logs captured during agent runs for all experimental conditions:
 - **`programming/`** — Execution logs from programming-exercise runs across multiple semesters and final exams (e.g., `st22final01.log` through `wt2526final02.log`, ~164k total lines). Each log captures the full agent interaction trace for that exercise.
 
 ### `scripts/`
-Python utilities extending a mini-CLI for interacting with the [Artemis](https://github.com/ls1intum/Artemis) benchmark instance:
+Python utilities extending a mini-CLI for interacting with the [Artemis](https://artemis-benchmark.vdl-ws.sdq.kastel.kit.edu/) benchmark instance:
 - `clone_student_repos.py` — Clone student programming-exercise repositories using term/final-exam identifiers.
-- `fetch_results.py` — Fetch and render the latest test results (with feedback) into Markdown reports.
-- `config.py` — Shared configuration, `.env` loading, and credential helpers.
 - `.env.example` — Template environment file for Artemis connection settings.
 
 ### `guidelines/`
@@ -86,18 +84,3 @@ pip install -r requirements.txt
 ```
 
 Then open the notebooks in the `notebooks/` directory with Jupyter or VS Code and run them to regenerate the plots (output to `output/`).
-
----
-
-## Citation
-
-```bibtex
-@misc{HaLinhNguyen_2026_agentic_memory,
-  author       = {Ha Linh Nguyen},
-  title        = {Replication Artifacts for Adaptive Context and Memory Management},
-  year         = {2026},
-  publisher    = {Zenodo},
-  doi          = {10.5281/zenodo.XXXXXXX},
-  url          = {https://doi.org/10.5281/zenodo.XXXXXXX}
-}
-```
