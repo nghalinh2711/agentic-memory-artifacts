@@ -34,11 +34,11 @@ OPENAI_API_KEY=sk-your-openai-api-key-here
 pnpm dev
 ```
 
-Open [http://localhost:3001](http://localhost:3001) in your browser.
+Open [http://localhost:3002](http://localhost:3002) in your browser.
 
 ## Port Information
 
-The application listens on port **3001** (port 3000 is reserved by the local agentic memory system).
+The application listens on port **3002** (port 3000 is reserved by the local agentic memory system).
 
 ## Tech Stack
 

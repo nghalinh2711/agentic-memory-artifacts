@@ -21,3 +21,11 @@ coverage/
 # OS junk
 .DS_Store
 *.probe-*
+
+# App-specific ignores
+apps/appA/.github/
+apps/appB/.github/
+
+# OS junk
+.DS_Store
+*.probe-*

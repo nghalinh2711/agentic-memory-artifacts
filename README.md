@@ -50,7 +50,7 @@ See [`apps/appA/README.md`](apps/appA/README.md) for setup and run instructions.
 - **LLM:** OpenAI (for LLM and embeddings)
 - **Features:** Document upload, RAG chat with source citations, Markdown rendering
 - **Package manager:** pnpm
-- **Port:** 3001
+- **Port:** 3002
 
 See [`apps/appB/README.md`](apps/appB/README.md) for setup and run instructions.
 
