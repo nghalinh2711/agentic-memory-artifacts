@@ -63,7 +63,7 @@ Context-specific guidelines used during the generation of MVPs:
 ### `prompts/`
 Custom prompt structures, context schemas, and system instructions used in the implementation.
 
-**`agentic-memory/`** — Prompts for the memory management system.
+**`agentic-memory/`** — Prompts for the memory management system, including an example `ontology.json` that can be uploaded as a seed ontology to the agentic-memory system.
 **`delivery/`** — Prompts for the delivery pipeline (coding and requirements agents).
 
 ### `notebooks/`

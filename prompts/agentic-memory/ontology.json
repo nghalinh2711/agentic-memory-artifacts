@@ -1,0 +1,124 @@
+{
+  "entries": [
+    {
+      "kind": "entity_type",
+      "name": "ROLE",
+      "description": "Job function or responsibility area",
+      "scope": "company"
+    },
+    {
+      "kind": "entity_type",
+      "name": "TEAM",
+      "description": "Internal team or squad",
+      "scope": "company"
+    },
+    {
+      "kind": "entity_type",
+      "name": "API",
+      "description": "Application interface or endpoint surface",
+      "scope": "domain:coding"
+    },
+    {
+      "kind": "entity_type",
+      "name": "FILE",
+      "description": "Source file or configuration file",
+      "scope": "domain:coding"
+    },
+    {
+      "kind": "entity_type",
+      "name": "FRAMEWORK",
+      "description": "Major library or framework used by the codebase",
+      "scope": "domain:coding"
+    },
+    {
+      "kind": "entity_type",
+      "name": "FUNCTION",
+      "description": "Named function or method",
+      "scope": "domain:coding"
+    },
+    {
+      "kind": "entity_type",
+      "name": "MODULE",
+      "description": "Logical code package or service",
+      "scope": "domain:coding"
+    },
+    {
+      "kind": "entity_type",
+      "name": "REPOSITORY",
+      "description": "Source code repository or monorepo",
+      "scope": "domain:coding"
+    },
+    {
+      "kind": "entity_type",
+      "name": "DOCUMENT",
+      "description": "Specification, guide, or reference artifact",
+      "scope": "global"
+    },
+    {
+      "kind": "entity_type",
+      "name": "PERSON",
+      "description": "Individual contributor or stakeholder",
+      "scope": "global"
+    },
+    {
+      "kind": "entity_type",
+      "name": "SYSTEM",
+      "description": "Software system or platform",
+      "scope": "global"
+    },
+    {
+      "kind": "relationship_type",
+      "name": "OWNS",
+      "description": "A team or person owns something",
+      "scope": "company"
+    },
+    {
+      "kind": "relationship_type",
+      "name": "RESPONSIBLE_FOR",
+      "description": "A team or role is accountable for something",
+      "scope": "company"
+    },
+    {
+      "kind": "relationship_type",
+      "name": "CALLS",
+      "description": "One function or service invokes another",
+      "scope": "domain:coding"
+    },
+    {
+      "kind": "relationship_type",
+      "name": "CONTAINS",
+      "description": "One code artifact contains another",
+      "scope": "domain:coding"
+    },
+    {
+      "kind": "relationship_type",
+      "name": "EXPOSES",
+      "description": "A module or service exposes an API",
+      "scope": "domain:coding"
+    },
+    {
+      "kind": "relationship_type",
+      "name": "IMPORTS",
+      "description": "One file or module imports another",
+      "scope": "domain:coding"
+    },
+    {
+      "kind": "relationship_type",
+      "name": "DEPENDS_ON",
+      "description": "One entity requires another",
+      "scope": "global"
+    },
+    {
+      "kind": "relationship_type",
+      "name": "RELATES_TO",
+      "description": "Generic fallback relationship",
+      "scope": "global"
+    },
+    {
+      "kind": "relationship_type",
+      "name": "USES",
+      "description": "One entity uses another",
+      "scope": "global"
+    }
+  ]
+}
