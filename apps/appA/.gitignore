@@ -1,0 +1,15 @@
+# Generated / runtime
+.scannerwork/
+coverage/
+data/
+dist/
+node_modules/
+uploads/
+
+# Secrets — keep .env.example as a template
+.env
+.env.*
+!.env.example
+
+# Local agent context
+context/

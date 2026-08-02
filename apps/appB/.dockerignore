@@ -1,0 +1,16 @@
+node_modules
+.next
+dist
+build
+.git
+.github
+.gitignore
+.env*
+coverage
+tests/artifacts
+.DS_Store
+*.pem
+npm-debug.log*
+pnpm-debug.log*
+.vercel
+*.tsbuildinfo

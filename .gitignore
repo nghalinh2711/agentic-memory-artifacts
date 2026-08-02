@@ -1,5 +1,23 @@
 venv/
 .venv/
-output/figures/*
-output/tikz/*
-output/tables/*
+output/figures/
+output/tikz/
+output/tables/
+
+# Node.js / TypeScript apps
+node_modules/
+dist/
+.next/
+*.tsbuildinfo
+
+# Environment files with secrets
+.env
+.env.local
+
+# Coverage
+coverage/
+.scannerwork/
+
+# OS junk
+.DS_Store
+*.probe-*

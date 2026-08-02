@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI RAG Chatbot - Workspaces</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1>🤖 AI RAG Chatbot for Research</h1>
+      <nav class="nav">
+        <a href="/" class="nav-link active">Workspaces</a>
+      </nav>
+    </header>
+
+    <main class="main">
+      <div class="workspace-header">
+        <h2>Research Workspaces</h2>
+        <button id="createBtn" class="btn btn-primary">+ New Workspace</button>
+      </div>
+
+      <div id="workspaceList" class="workspace-list">
+        <div class="loading">Loading workspaces...</div>
+      </div>
+
+      <!-- Create/Edit Modal -->
+      <div id="modal" class="modal hidden">
+        <div class="modal-content">
+          <h3 id="modalTitle">Create Workspace</h3>
+          <form id="workspaceForm">
+            <div class="form-group">
+              <label for="nameInput">Workspace Name</label>
+              <input type="text" id="nameInput" placeholder="Enter workspace name" required maxlength="100">
+              <span id="nameError" class="error hidden">Name is required</span>
+            </div>
+            <div class="form-group">
+              <label for="descInput">Description (optional)</label>
+              <textarea id="descInput" placeholder="Brief description of this workspace" rows="3" maxlength="500"></textarea>
+            </div>
+            <div class="form-actions">
+              <button type="button" id="cancelBtn" class="btn btn-secondary">Cancel</button>
+              <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Delete Confirmation Modal -->
+      <div id="deleteModal" class="modal hidden">
+        <div class="modal-content modal-sm">
+          <h3>Delete Workspace</h3>
+          <p>Are you sure you want to delete "<span id="deleteName"></span>"? This will permanently remove all documents, conversations, and data.</p>
+          <div class="form-actions">
+            <button type="button" id="deleteCancelBtn" class="btn btn-secondary">Cancel</button>
+            <button type="button" id="deleteConfirmBtn" class="btn btn-danger">Delete</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

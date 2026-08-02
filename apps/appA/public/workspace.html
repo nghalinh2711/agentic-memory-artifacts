@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workspace - AI RAG Chatbot</title>
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    .upload-zone {
+      border: 2px dashed #cbd5e0;
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: #f7fafc;
+    }
+    .upload-zone:hover, .upload-zone.dragover {
+      border-color: #667eea;
+      background: #ebf4ff;
+    }
+    .upload-zone p { color: #718096; margin: 0.5rem 0; }
+    .upload-zone .icon { font-size: 2rem; }
+    .supported-types { font-size: 0.8rem; color: #a0aec0; margin-top: 0.5rem; }
+    .type-icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: 6px; font-size: 0.75rem;
+      font-weight: 600; margin-right: 0.5rem; flex-shrink: 0;
+    }
+    .type-pdf { background: #fed7d7; color: #c53030; }
+    .type-docx { background: #c6f6d5; color: #276749; }
+    .type-txt { background: #e2e8f0; color: #4a5568; }
+    .type-md { background: #fefcbf; color: #975a16; }
+    .doc-card-title { display: flex; align-items: center; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1>🤖 AI RAG Chatbot for Research</h1>
+      <nav class="nav">
+        <a href="/" class="nav-link">Workspaces</a>
+        <a href="#" class="nav-link active" id="wsTab">Documents</a>
+        <a href="#" class="nav-link" id="chatTab">Chat</a>
+      </nav>
+    </header>
+
+    <main class="main">
+      <div class="workspace-header">
+        <h2 id="wsName">Loading...</h2>
+      </div>
+
+      <!-- Drag & Drop Upload Zone -->
+      <div id="uploadZone" class="upload-zone" style="margin-bottom: 1.5rem;">
+        <div class="icon">📁</div>
+        <p><strong>Drag & drop files here</strong> or click to browse</p>
+        <p class="supported-types">Supported: PDF, Word (.docx), TXT, Markdown (.md) — up to 50MB</p>
+        <input type="file" id="fileInput" hidden accept=".pdf,.docx,.txt,.md,text/plain,text/markdown,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+      </div>
+
+      <!-- Upload Status -->
+      <div id="uploadStatus" class="hidden" style="margin-bottom: 1rem; padding: 0.75rem; border-radius: 8px; background: #ebf4ff; color: #2b6cb0; display: flex; align-items: center; gap: 0.5rem;">
+        <span id="uploadStatusText"></span>
+        <div id="uploadProgress" style="flex:1; height:4px; background:#bee3f8; border-radius:2px; overflow:hidden;">
+          <div id="uploadProgressBar" style="height:100%; background:#667eea; width:0%; transition:width 0.3s;"></div>
+        </div>
+      </div>
+
+      <div id="documentList" class="workspace-list">
+        <div class="loading">Loading documents...</div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const workspaceId = params.get('id');
+
+    if (!workspaceId) window.location.href = '/';
+
+    document.getElementById('wsTab').href = `/workspace.html?id=${workspaceId}`;
+    document.getElementById('chatTab').href = `/chat.html?id=${workspaceId}`;
+
+    const SUPPORTED_TYPES = {
+      'application/pdf': { icon: 'PDF', cls: 'type-pdf', label: 'PDF' },
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': { icon: 'DOC', cls: 'type-docx', label: 'Word' },
+      'text/plain': { icon: 'TXT', cls: 'type-txt', label: 'Text' },
+      'text/markdown': { icon: 'MD', cls: 'type-md', label: 'Markdown' },
+      'text/x-markdown': { icon: 'MD', cls: 'type-md', label: 'Markdown' },
+    };
+    const SUPPORTED_EXTS = ['.pdf', '.docx', '.txt', '.md'];
+
+    function getTypeInfo(mimeType, filename) {
+      if (SUPPORTED_TYPES[mimeType]) return SUPPORTED_TYPES[mimeType];
+      const ext = '.' + filename.split('.').pop()?.toLowerCase();
+      if (ext === '.pdf') return SUPPORTED_TYPES['application/pdf'];
+      if (ext === '.docx') return SUPPORTED_TYPES['application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+      if (ext === '.md') return SUPPORTED_TYPES['text/markdown'];
+      return { icon: '?', cls: 'type-txt', label: 'File' };
+    }
+
+    function isValidFile(file) {
+      if (SUPPORTED_TYPES[file.type]) return true;
+      const ext = '.' + file.name.split('.').pop()?.toLowerCase();
+      return SUPPORTED_EXTS.includes(ext);
+    }
+
+    async function loadWorkspace() {
+      const res = await fetch(`/api/workspaces/${workspaceId}`);
+      const ws = await res.json();
+      document.getElementById('wsName').textContent = ws.name;
+      document.title = `${ws.name} - AI RAG Chatbot`;
+    }
+
+    async function loadDocuments() {
+      try {
+        const res = await fetch(`/api/workspaces/${workspaceId}/documents`);
+        const docs = await res.json();
+        const list = document.getElementById('documentList');
+
+        if (docs.length === 0) {
+          list.innerHTML = '<div class="empty-state"><p>No documents yet. Drag & drop files above to get started!</p></div>';
+          return;
+        }
+
+        list.innerHTML = docs.map(d => {
+          const ti = getTypeInfo(d.mime_type, d.original_name);
+          const statusColor = d.status === 'ready' ? '#48bb78' : d.status === 'error' ? '#fc8181' : '#ecc94b';
+          return `
+          <div class="workspace-card">
+            <div class="workspace-info">
+              <div class="doc-card-title">
+                <span class="type-icon ${ti.cls}">${ti.icon}</span>
+                <h3>${escapeHtml(d.original_name)}</h3>
+              </div>
+              <p>${ti.label} · ${formatSize(d.file_size)}</p>
+              <div class="workspace-meta">
+                Status: <span style="color: ${statusColor}; font-weight: 500;">${d.status}</span>
+                · ${new Date(d.created_at).toLocaleString()}
+              </div>
+            </div>
+            <div class="workspace-actions">
+              ${d.status === 'uploaded' ? `<button class="btn btn-primary btn-sm" onclick="processDoc('${d.id}')">⚙️ Process</button>` : d.status === 'error' ? `<button class="btn btn-primary btn-sm" onclick="processDoc('${d.id}')">🔄 Retry</button>` : ''}
+              <button class="btn btn-secondary btn-sm" onclick="renameDoc('${d.id}', '${escapeHtml(d.original_name)}')">✏️ Rename</button>
+              <button class="btn btn-danger btn-sm doc-delete-btn" data-id="${d.id}" data-name="${escapeHtml(d.original_name)}">🗑️</button>
+            </div>
+          </div>
+        `}).join('');
+
+        // Attach delete handlers with custom confirmation
+        document.querySelectorAll('.doc-delete-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const docId = this.dataset.id;
+            const docName = this.dataset.name;
+            if (confirm(`Delete "${docName}"?\n\nThis will permanently remove the document, its chunks, and embeddings.`)) {
+              deleteDoc(docId);
+            }
+          });
+        });
+      } catch (err) {
+        document.getElementById('documentList').innerHTML = '<div class="loading">Failed to load documents.</div>';
+      }
+    }
+
+    function formatSize(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+      return (bytes / 1048576).toFixed(1) + ' MB';
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    // Drag & Drop
+    const uploadZone = document.getElementById('uploadZone');
+    const fileInput = document.getElementById('fileInput');
+
+    uploadZone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length > 0) uploadFile(fileInput.files[0]);
+    });
+
+    uploadZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadZone.classList.add('dragover');
+    });
+    uploadZone.addEventListener('dragleave', () => {
+      uploadZone.classList.remove('dragover');
+    });
+    uploadZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadZone.classList.remove('dragover');
+      if (e.dataTransfer.files.length > 0) {
+        uploadFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    async function uploadFile(file) {
+      const statusEl = document.getElementById('uploadStatus');
+      const statusText = document.getElementById('uploadStatusText');
+      const progressBar = document.getElementById('uploadProgressBar');
+
+      if (!isValidFile(file)) {
+        alert(`Unsupported file type: ${file.type || file.name}\n\nSupported formats: PDF, DOCX, TXT, MD`);
+        return;
+      }
+
+      statusText.textContent = `Uploading ${file.name}...`;
+      statusEl.classList.remove('hidden');
+      progressBar.style.width = '30%';
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const res = await fetch(`/api/workspaces/${workspaceId}/documents`, {
+          method: 'POST',
+          body: formData,
+        });
+        progressBar.style.width = '80%';
+
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.error || 'Upload failed');
+        }
+
+        progressBar.style.width = '100%';
+        statusText.textContent = `✅ Uploaded ${file.name}`;
+        statusEl.style.background = '#f0fff4';
+        statusEl.style.color = '#276749';
+        setTimeout(() => {
+          statusEl.classList.add('hidden');
+          progressBar.style.width = '0%';
+          statusEl.style.background = '#ebf4ff';
+          statusEl.style.color = '#2b6cb0';
+        }, 2000);
+
+        fileInput.value = '';
+        loadDocuments();
+      } catch (err) {
+        statusText.textContent = `Error: ${err.message}`;
+        statusEl.style.background = '#fff5f5';
+        statusEl.style.color = '#c53030';
+        setTimeout(() => {
+          statusEl.classList.add('hidden');
+          statusEl.style.background = '#ebf4ff';
+          statusEl.style.color = '#2b6cb0';
+        }, 4000);
+      }
+    }
+
+    async function processDoc(docId) {
+      try {
+        const res = await fetch(`/api/workspaces/${workspaceId}/documents/${docId}/process`, { method: 'POST' });
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.error || 'Processing failed');
+        }
+        loadDocuments();
+      } catch (err) {
+        alert('Processing failed: ' + err.message);
+      }
+    }
+
+    async function renameDoc(docId, currentName) {
+      const newName = prompt('Enter new name:', currentName);
+      if (!newName || newName.trim() === '') return;
+      try {
+        await fetch(`/api/workspaces/${workspaceId}/documents/${docId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: newName.trim() }),
+        });
+        loadDocuments();
+      } catch (err) {
+        alert('Rename failed: ' + err.message);
+      }
+    }
+
+    async function deleteDoc(docId) {
+      try {
+        await fetch(`/api/workspaces/${workspaceId}/documents/${docId}`, { method: 'DELETE' });
+        loadDocuments();
+      } catch (err) {
+        alert('Delete failed: ' + err.message);
+      }
+    }
+
+    loadWorkspace();
+    loadDocuments();
+  </script>
+</body>
+</html>
