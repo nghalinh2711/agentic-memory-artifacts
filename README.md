@@ -3,6 +3,8 @@
 This repository contains the replication package and evaluation artifacts for the thesis **"Adaptive Context and Memory Management."** It provides the experimental data, custom prompt structures, guidelines, and evaluation results used to study how agents organize, interpret, and retrieve contextual memory (spanning memories, knowledge, entities, and insights).
 
 > **Note:** This repository hosts evaluation artifacts, prompts, guidelines, and results. It does not contain the closed-source software.
+>
+> The primary archive (including the presentation) is hosted at the [KASTEL SDQ thesis repository on KIT GitLab](https://gitlab.kit.edu/kit/kastel/sdq/stud/abschlussarbeiten/masterarbeiten/ha-linh-nguyen) (private).
 
 ---
 
@@ -101,6 +103,14 @@ pip install -r requirements.txt
 ```
 
 Then open the notebooks in the `notebooks/` directory with Jupyter or VS Code and run them to regenerate the plots (output to `output/`).
+
+Alternatively, run all notebooks with a single command:
+
+```bash
+./run_all_notebooks.sh
+```
+
+This executes the notebooks in order and writes generated figures to `output/`.
 
 ---
 
